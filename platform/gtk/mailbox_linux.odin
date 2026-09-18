@@ -24,7 +24,7 @@ mailboxes := [?]Mailbox {
 	{name = "Trash", icon_name = "user-trash-symbolic"},
 }
 
-// Widgets from `ui/mailbox.ui` that the app keeps using after loading it.
+// Widgets from `ui/mailbox.blp` that the app keeps using after loading it.
 Mailbox_UI :: struct {
 	window:        ^gtk.Window,
 	toast_overlay: ^adw.ToastOverlay,
@@ -35,14 +35,12 @@ Mailbox_UI :: struct {
 // use a pointer to it as user data.
 mailbox_ui: Mailbox_UI
 
-// Builds the main window from `ui/mailbox.ui`. Returns nil if the UI file
-// cannot be loaded.
+// Builds the main window from the compiled `ui/mailbox.blp` resource. Returns
+// nil if the UI cannot be loaded.
 setup_mailbox_ui :: proc(app: ^gtk.Application) -> ^gtk.Window {
-	// The path is baked in at compile time for now; release builds should embed
-	// the file (or a compiled .gresource) instead of reading from the source tree.
-	builder := gtk.builder_new_from_file(#directory + "ui/mailbox.ui")
+	builder := gtk.builder_new_from_resource(RESOURCE_BASE + "/ui/mailbox.ui")
 	if builder == nil {
-		fmt.eprintln("HyperMail: could not load platform/ui/mailbox.ui")
+		fmt.eprintln("HyperMail: could not load the mailbox UI resource")
 		return nil
 	}
 	defer gobj.object_unref(builder)
@@ -58,7 +56,7 @@ setup_mailbox_ui :: proc(app: ^gtk.Application) -> ^gtk.Window {
 	   toast_overlay == nil ||
 	   mailbox_list == nil ||
 	   compose_button == nil {
-		fmt.eprintln("HyperMail: mailbox.ui is missing expected widgets")
+		fmt.eprintln("HyperMail: mailbox UI is missing expected widgets")
 		return nil
 	}
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
     <gresource prefix="/io/github/bloomdevelop/HyperMail">
-        <file preprocess="xml-stripblanks">ui/mailbox.ui</file>
+        <file alias="ui/mailbox.ui" preprocess="xml-stripblanks">build/ui/mailbox.ui</file>
         <file>data/icons/shoe-box-symbolic.svg</file>
         <file>data/icons/menu-symbolic.svg</file>
     </gresource>

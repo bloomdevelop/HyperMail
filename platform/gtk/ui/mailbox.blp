@@ -1,0 +1,74 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.Window window {
+  title: _("HyperMail");
+  default-width: 900;
+  default-height: 640;
+
+  content: Adw.NavigationSplitView split_view {
+    sidebar: Adw.NavigationPage {
+      title: _("HyperMail");
+      tag: "mailboxes";
+
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar {
+          show-title: true;
+
+          [end]
+          Button app_menu {
+            icon-name: "menu-symbolic";
+            tooltip-text: _("Open Menu");
+          }
+        }
+
+        content: Adw.NavigationPage {
+          title: _("Mailboxes");
+
+          child: ScrolledWindow {
+            hscrollbar-policy: never;
+
+            child: ListBox mailbox_list {
+              selection-mode: browse;
+              styles ["navigation-sidebar"]
+            };
+          };
+        };
+      };
+    };
+
+    content: Adw.NavigationPage {
+      title: _("Messages");
+
+      child: Adw.ToastOverlay toast_overlay {
+        child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar {
+            show-title: false;
+
+            [end]
+            Button compose_button {
+              icon-name: "document-new-symbolic";
+              tooltip-text: _("New Message");
+            }
+          }
+
+          content: Adw.StatusPage {
+            icon-name: "mail-unread-symbolic";
+            title: _("There are no messages");
+            description: _("Come back later on");
+          };
+        };
+      };
+    };
+  };
+
+  Adw.Breakpoint {
+    condition ("max-width: 550sp")
+
+    setters {
+      split_view.collapsed: true;
+    }
+  }
+}
