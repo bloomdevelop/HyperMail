@@ -30,9 +30,18 @@ on_activate :: proc "c" (app: ^gtk.Application, user_data: rawptr) {
 run :: proc() {
 	resource := gio.resource_load(#directory + "hypermail.gresource", nil)
 	if resource == nil {
-		fmt.eprintf("Missing .gresource, please generate it.")
+		fmt.eprintf("Missing .gresource, please generate by running \"just compile-resources\".")
+		os.exit(1)
 	}
 	gio.resources_register(resource)
+
+	// TODO: Create an helper to it can bundle at compile time
+	// _, resource_err := helper.register_resource(#load("hypermail.gresource"))
+    // if resource_err != nil {
+    //     fmt.eprintf("HyperMail: %s\n", resource_err.message)
+    //     glib.free(resource_err)
+    //     os.exit(1)
+    // }
 
 	gtk.init()
 	gtk.icon_theme_add_resource_path(

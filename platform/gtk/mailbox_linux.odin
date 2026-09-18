@@ -47,12 +47,14 @@ setup_mailbox_ui :: proc(app: ^gtk.Application) -> ^gtk.Window {
 	}
 	defer gobj.object_unref(builder)
 
+	window_obj := gtk.builder_get_object(builder, "window")
 	split_view := adw.NAVIGATION_SPLIT_VIEW(gtk.builder_get_object(builder, "split_view"))
 	toast_overlay := adw.TOAST_OVERLAY(gtk.builder_get_object(builder, "toast_overlay"))
 	mailbox_list := gtk.LIST_BOX(gtk.builder_get_object(builder, "mailbox_list"))
 	compose_button := gtk.BUTTON(gtk.builder_get_object(builder, "compose_button"))
 
-	if split_view == nil ||
+	if window_obj == nil ||
+	   split_view == nil ||
 	   toast_overlay == nil ||
 	   mailbox_list == nil ||
 	   compose_button == nil {
@@ -60,10 +62,11 @@ setup_mailbox_ui :: proc(app: ^gtk.Application) -> ^gtk.Window {
 		return nil
 	}
 
-	window := gtk.WINDOW(adw.application_window_new(app))
-	gtk.window_set_title(window, "HyperMail")
-	gtk.window_set_default_size(window, 900, 640)
-	adw.application_window_set_content(adw.APPLICATION_WINDOW(window), gtk.WIDGET(split_view))
+	// The window comes from the builder rather than `adw.application_window_new`,
+	// so it has to be attached to the application by hand. This also makes
+	// `gtk_application_get_active_window` in `on_activate` find it again.
+	window := gtk.WINDOW(window_obj)
+	gtk.window_set_application(window, app)
 
 	mailbox_ui = {
 		window        = window,
