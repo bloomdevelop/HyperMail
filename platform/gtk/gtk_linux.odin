@@ -32,6 +32,14 @@ run :: proc() {
 	if resource == nil {
 		fmt.eprintf("Missing .gresource, please generate it.")
 	}
+	gio.resources_register(resource)
+
+	gtk.init()
+	gtk.icon_theme_add_resource_path(
+		gtk.icon_theme_get_for_display(gtk.gdk_display_get_default()),
+		ICONS_PATH
+	)
+
 	app := adw.application_new("io.github.bloomdevelop.HyperMail", .APPLICATION_DEFAULT_FLAGS)
 
 	gobj.signal_connect(app, "activate", on_activate)
