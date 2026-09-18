@@ -21,7 +21,7 @@ run :: proc() {
 		.Miniaturizable,
 		.Resizable,
 	}, .Buffered, false)
-	wnd->setTitle(NS.AT("SuperMail"))
+	wnd->setTitle(NS.AT("HyperMail"))
 	wnd->center()
 	wnd->makeKeyAndOrderFront(nil)
 

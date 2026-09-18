@@ -1,4 +1,4 @@
-# SuperMail
+# HyperMail
 
 > Work in Progress, expect unfinished stuff :)
 

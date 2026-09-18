@@ -7,7 +7,7 @@ import gobj "../vendor/odin-gtk/glib/gobject"
 
 on_activate :: proc "c" (app: ^gtk.Application, user_data: rawptr) {
 	window := gtk.WINDOW(gtk.application_window_new(app))
-	gtk.window_set_title(window, "SuperMail")
+	gtk.window_set_title(window, "HyperMail")
 	gtk.window_set_default_size(window, 400, 300)
 
 	box := gtk.box_new(.VERTICAL, 10)
@@ -17,7 +17,7 @@ on_activate :: proc "c" (app: ^gtk.Application, user_data: rawptr) {
 }
 
 run :: proc() {
-	app := gtk.application_new("io.github.bloomdevelop.supermail", .APPLICATION_DEFAULT_FLAGS)
+	app := gtk.application_new("io.github.bloomdevelop.HyperMail", .APPLICATION_DEFAULT_FLAGS)
 
 	gobj.signal_connect(app, "activate", on_activate)
 
