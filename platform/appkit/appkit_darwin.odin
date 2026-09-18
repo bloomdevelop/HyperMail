@@ -1,4 +1,4 @@
-package platform
+package appkit
 
 import NS "core:sys/darwin/Foundation"
 
