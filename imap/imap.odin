@@ -3,6 +3,7 @@ package imap
 import "core:fmt"
 import "core:strings"
 import "../tls"
+import "../utils"
 
 Client :: struct {
 	conn: tls.Connection,
@@ -24,7 +25,7 @@ Response :: struct {
 	status_line: string,
 }
 
-// TODO: Ensure to make the port as number instead.
+// TODO)) Ensure to make the port as number instead.
 //
 // Right now it uses hardcored port of 993, but there's some server that sets on a different
 // ports. Which makes the hardcoded entirely useless. So we need to change it soon (-ish).
@@ -112,7 +113,7 @@ logout :: proc(client: ^Client) {
 
 read_line :: proc(client: ^Client, allocator := context.allocator) -> (line: string, err: Error) {
 	for {
-		if idx := find_crlf(client.pending[:]); idx >= 0 {
+		if idx := utils.find_crlf(client.pending[:]); idx >= 0 {
 			line = strings.clone(string(client.pending[:idx]), allocator)
 			remove_range(&client.pending, 0, idx + 2)
 			return line, .None
@@ -131,14 +132,4 @@ disconnect :: proc(client: ^Client) {
 	tls.close(&client.conn)
 	delete(client.pending)
 	client.pending = nil
-}
-
-@(private)
-find_crlf :: proc(data: []u8) -> int {
-	for i in 0 ..< len(data) - 1 {
-		if data[i] == '\r' && data[i + 1] == '\n' {
-			return i
-		}
-	}
-	return -1
 }
